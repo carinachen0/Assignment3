@@ -6,6 +6,7 @@ It contains the top-level state.
 ==================================================*/
 import React, {Component} from 'react';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
+import axios from 'axios';  // Library used to send asynchronous HTTP requests to RESTful endpoints (APIs)
 
 // Import other components
 import Home from './components/Home';
@@ -18,7 +19,7 @@ class App extends Component {
   constructor() {  // Create and initialize state
     super(); 
     this.state = {
-      accountBalance: 1234567.89,
+      accountBalance: 0, // set inital bal to 0
       creditList: [],
       debitList: [],
       currentUser: {
@@ -27,6 +28,43 @@ class App extends Component {
       }
     };
   }
+
+  // make aync API call to retrieve data from remote website
+  async componentDidMount() {
+    // initialize totals
+    let totalCredits = 0;
+    let totalDebits = 0;
+
+    // retrieve starter credit list from external API
+    try {
+      let creditResponse = await axios.get('https://johnnylaicode.github.io/api/credits.json'); //axious fetches data  
+      console.log(creditResponse);
+      // to get data object in thsi response, need to use "response.data"
+      this.setState({creditList: creditResponse.data}) // store recieved dta in state's "creditList" object
+    }
+    catch (error) { // print out details about errors at console if there is any error 
+      if (error.creditResponse) {
+        console.log(error.creditResponse.data); // prints out error mssg ex. Not Found
+        console.log(error.creditResponse.status); // prints out error status code ex. 404 
+      }
+    }
+
+    // retrieve starter debit list from external API
+    try { 
+      let debitResponse = await axios.get('https://johnnylaicode.github.io/api/debits.json'); //axious fetches data  
+      console.log(debitResponse);
+      this.setState({debitResponse: debitResponse.data}) // store recieved data in state's "debitList" object
+    
+    }
+    catch {
+      if (error.debitResponse) {
+        console.log(error.debitResponse.data); // prints out error mssg ex. Not Found
+        console.log(error.debitResponse.status); // prints out error status code ex. 404 
+      }
+    }
+  }
+
+  
 
   // Update state's currentUser (userName) after "Log In" button is clicked
   mockLogIn = (logInInfo) => {  
