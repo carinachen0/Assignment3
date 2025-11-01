@@ -35,12 +35,17 @@ class App extends Component {
     let totalCredits = 0;
     let totalDebits = 0;
 
-    // retrieve starter credit list from external API
+    // Fetch starter credit list from external API
     try {
       let creditResponse = await axios.get('https://johnnylaicode.github.io/api/credits.json'); //axious fetches data  
       console.log(creditResponse);
       // to get data object in thsi response, need to use "response.data"
       this.setState({creditList: creditResponse.data}) // store recieved dta in state's "creditList" object
+    
+      // Calculate how credit is added to account to update balance 
+      for (let credit of this.state.creditList) {
+        totalCredits += credit.amount;
+      }
     }
     catch (error) { // print out details about errors at console if there is any error 
       if (error.creditResponse) {
@@ -49,12 +54,16 @@ class App extends Component {
       }
     }
 
-    // retrieve starter debit list from external API
+    // Fetch starter debit list from external API
     try { 
       let debitResponse = await axios.get('https://johnnylaicode.github.io/api/debits.json'); //axious fetches data  
       console.log(debitResponse);
-      this.setState({debitResponse: debitResponse.data}) // store recieved data in state's "debitList" object
-    
+      this.setState({debitList: debitResponse.data}) // store recieved data in state's "debitList" object
+      
+      // Calculate debit 
+      for (let debit of this.state.debitList) {
+        totalDebits += debit.amount;
+      }
     }
     catch {
       if (error.debitResponse) {
@@ -62,9 +71,12 @@ class App extends Component {
         console.log(error.debitResponse.status); // prints out error status code ex. 404 
       }
     }
-  }
+    // calculate account balance 
+    let balance = totalCredits - totalDebits;
 
-  
+    // update states
+    this.setState ({accountBalance: Math.round(balance * 100) / 100})
+  }
 
   // Update state's currentUser (userName) after "Log In" button is clicked
   mockLogIn = (logInInfo) => {  
