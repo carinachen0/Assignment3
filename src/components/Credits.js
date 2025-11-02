@@ -57,7 +57,8 @@ const Credits = (props) => {
       {/* Form for adding new credit */}
       <form onSubmit={submit}>
         <input type="text" name="description" placeholder='Description' />
-        <input type="number" name="amount" placeholder='Amount' />
+        {/* use step so users can enter up to 2 decimal places ex. 2.31  */}
+        <input type="number" name="amount" placeholder='Amount' step="0.01" /> 
         <button type="submit">Add Credit</button>
       </form>
       <br/>
