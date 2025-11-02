@@ -62,6 +62,10 @@ const Debits = (props) => {
       </form>
       <br/>
 
+      {/* to display account balance in page */}
+      <AccountBalance accountBalance={props.accountBalance} />
+      <br/>
+      
       <Link to="/">Return to Home</Link>
     </div>
   );
