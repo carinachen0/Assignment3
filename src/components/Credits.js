@@ -61,7 +61,11 @@ const Credits = (props) => {
         <button type="submit">Add Credit</button>
       </form>
       <br/>
-
+      
+      {/* to display account balance in page */}
+      <AccountBalance accountBalance={props.accountBalance} />
+      <br/>
+      
       <Link to="/">Return to Home</Link>
     </div>
   );
