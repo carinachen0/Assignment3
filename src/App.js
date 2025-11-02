@@ -65,7 +65,7 @@ class App extends Component {
         totalDebits += debit.amount;
       }
     }
-    catch {
+    catch (error) {
       if (error.debitResponse) {
         console.log(error.debitResponse.data); // prints out error mssg ex. Not Found
         console.log(error.debitResponse.status); // prints out error status code ex. 404 
