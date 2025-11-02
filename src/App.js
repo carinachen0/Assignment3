@@ -81,11 +81,21 @@ class App extends Component {
   // adding new credit item
   addCredit = (newCredit) => {
     this.setState(prevState => ({
-      creditList: [...prevState.creditList, newCredit]
-    }), this.newAccountBalance); // newAccountBalance defined below 
+      creditList: [...prevState.creditList, newCredit],
+      // updates account balance by adding the new credit amount
+      accountBalance: parseFloat((prevState.accountBalance + newCredit.amount).toFixed(2))
+    }));
   }
 
-  
+  // adding a new debit item
+  addDebit = (newDebit) => {
+    this.setState(prevState => ({
+      debitList: [...prevState.debitList, newDebit],
+      // updates account balance by subtracting the new debit amount
+      accountBalance: parseFloat((prevState.accountBalance - newDebit.amount).toFixed(2))
+    }));
+  }
+
   // Update state's currentUser (userName) after "Log In" button is clicked
   mockLogIn = (logInInfo) => {  
     const newUser = {...this.state.currentUser};
@@ -102,7 +112,7 @@ class App extends Component {
     )
     const LogInComponent = () => (<LogIn user={this.state.currentUser} mockLogIn={this.mockLogIn} />)
     const CreditsComponent = () => (<Credits credits={this.state.creditList} addCredit={this.addCredit} />) 
-    const DebitsComponent = () => (<Debits debits={this.state.debitList} />) 
+    const DebitsComponent = () => (<Debits debits={this.state.debitList} addDebit={this.addDebit} />) 
 
     // Important: Include the "basename" in Router, which is needed for deploying the React app to GitHub Pages
     return (
